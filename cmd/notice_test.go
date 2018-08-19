@@ -10,7 +10,7 @@ import (
 	"testing"
 )
 
-func TestNotice(t *testing.T) {
+func TestNoticeToSlack(t *testing.T) {
 	var requestBody string
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		var body []byte
@@ -24,14 +24,12 @@ func TestNotice(t *testing.T) {
 	}))
 	defer server.Close()
 
-	cfg := &Config{
-		Slack: slackConfig{
-			WebhookURL: server.URL,
-		},
+	cfg := &slackConfig{
+		WebhookURL: server.URL,
 	}
 
 	type args struct {
-		cfg     *Config
+		cfg     *slackConfig
 		content []byte
 	}
 	tests := []struct {
@@ -53,7 +51,7 @@ func TestNotice(t *testing.T) {
 
 	for _, test := range tests {
 		t.Run(test.name, func(t *testing.T) {
-			if err := Notice(test.args.cfg, test.args.content); (err != nil) != test.wantErr {
+			if err := noticeToSlack(test.args.cfg, test.args.content); (err != nil) != test.wantErr {
 				t.Errorf("Notice() error = %#v, wantErr %v", err, test.wantErr)
 			}
 			if requestBody != test.expected {

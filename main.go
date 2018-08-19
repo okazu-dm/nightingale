@@ -49,9 +49,10 @@ var cfg cmd.Config
 const EnvPrefix string = "NIGHTINGALE"
 
 func init() {
-	rootCmd.PersistentFlags().StringVarP(&cfgFile, "config", "c", "", "config file (default: ./config.yml)")
-	rootCmd.PersistentFlags().StringP("template_path", "t", "default", "Template file path")
-	rootCmd.PersistentFlags().StringP("slack_url", "", "", "Slack Channel to notify something.")
+	rootCmd.PersistentFlags().StringVarP(&cfgFile, "config", "c", "config.yml", "config file")
+	rootCmd.PersistentFlags().StringP("template_path", "p", "default", "Template file path")
+	rootCmd.PersistentFlags().StringP("slack_url", "", "", "Slack Webhook URL to notify something.")
+	rootCmd.PersistentFlags().StringP("type", "t", "stdout", "Channel to notify something.(stdout/slack)")
 	viper.BindPFlag("template_path", rootCmd.PersistentFlags().Lookup("template_path"))
 	viper.BindPFlag("slack.url", rootCmd.PersistentFlags().Lookup("slack_url"))
 	viper.BindEnv("slack.url", EnvPrefix+"_SLACK_URL")
