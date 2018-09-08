@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"html/template"
+	"path/filepath"
 
 	"github.com/Masterminds/sprig"
 )
@@ -31,5 +32,5 @@ func doRender(inputJSON []byte, tmpl *template.Template) ([]byte, error) {
 }
 
 func loadTemplate(templatePath string) (*template.Template, error) {
-	return template.New(templatePath).Funcs(sprig.FuncMap()).ParseFiles(templatePath)
+	return template.New(filepath.Base(templatePath)).Funcs(sprig.FuncMap()).ParseFiles(templatePath)
 }
